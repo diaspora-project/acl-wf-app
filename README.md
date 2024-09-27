@@ -18,9 +18,9 @@ It is an end-to-end workflow (from instrument to a compute node) orchestrated by
 
 4- create endpoint
 
-5- create acl_dependencies directory at /home/<usr>/.globus_compute/<endpoint>
+5- create acl_dependencies directory at /home /<usr> /.globus_compute /<endpoint>
 
-6- copy globus_endpoint_files in  /home/<usr>/.globus_compute/<endpoint>/acl_dependencies
+6- copy globus_endpoint_files in  /home /<usr> /.globus_compute /<endpoint> /acl_dependencies
 
 7- copy testing profiles and jupyter notebooks at the client node
 
