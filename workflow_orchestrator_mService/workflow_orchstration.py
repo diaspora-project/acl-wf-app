@@ -16,8 +16,8 @@ connectionPort='5001'
 def get_IV_dataset():
     try:
         modules_call = Pyro4.core.Proxy('PYRO:Pyro_Server@' + ipAddressServer + ':' + connectionPort)
-        IV_dataset= modules_call.lst_IV_datasets()
-        print(IV_dataset)
+        IV_datasets= modules_call.lst_IV_datasets(pathInclude=True)
+        print("\n".join(IV_datasets))
     except Exception as e:
         print(e.args)
 
@@ -35,4 +35,4 @@ def call_Shutdown():
 
 get_IV_dataset()
 
-call_Shutdown()
+#call_Shutdown()

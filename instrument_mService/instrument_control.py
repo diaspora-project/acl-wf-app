@@ -12,16 +12,22 @@ Pyro4.config.SERIALIZER = "pickle"
 
 ipAddressServer='192.168.1.242'
 connectionPort='5001'
+datasetPath='./instrument_mService/I-V_data'
 
 @Pyro4.expose
 class Embedded_Server(object):
     def __init__(self, daemon):
         self.daemon = daemon
     
-    def lst_IV_datasets(self):
-        dataset=[os.path.splitext(x)[0] for x in os.listdir('./instrument_mService/I-V_data')]
-        return dataset
+    def lst_IV_datasets(self, pathInclude=False) -> list:
+        datasets=[os.path.splitext(x)[0] for x in os.listdir(datasetPath)]
+        if pathInclude:
+            datasets=[os.path.relpath(y) for y in (os.path.join(datasetPath,x) for x in datasets)]
 
+        return datasets
+
+    def get_IV_dataset(self, dataset,size: int |None)-> pd.DataFrame:
+        pass
 
     @Pyro4.oneway
     def shutdown(self):
