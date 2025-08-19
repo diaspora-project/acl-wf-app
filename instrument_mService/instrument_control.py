@@ -19,11 +19,13 @@ class Embedded_Server(object):
     def __init__(self, daemon):
         self.daemon = daemon
     
-    def lst_IV_datasets(self, pathInclude=False) -> list:
+    def lst_IV_datasets(self, pathInclude=False,type='relative') -> list:
         datasets=[os.path.splitext(x)[0] for x in os.listdir(datasetPath)]
         if pathInclude:
-            datasets=[os.path.relpath(y) for y in (os.path.join(datasetPath,x) for x in datasets)]
-
+            if type == 'absolute':
+                datasets = [os.path.abspath(y) for y in (os.path.join(datasetPath, x) for x in datasets)]
+            else:
+                datasets=[os.path.relpath(y) for y in (os.path.join(datasetPath,x) for x in datasets)]
         return datasets
 
     def get_IV_dataset(self, dataset,size: int |None)-> pd.DataFrame:

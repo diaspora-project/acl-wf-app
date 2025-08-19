@@ -14,9 +14,15 @@ ipAddressServer='192.168.1.242'
 connectionPort='5001'
 
 def get_IV_dataset():
+    """
+    three types of returned I-V datasets:
+    1- lst_IV_datasets(): return just dataset file names (default)
+    2- lst_IV_datasets(pathInclude=True): return datasets with relative paths
+    3- lst_IV_datasets(pathInclude=True,type='absolute'): return datasets with absolute paths
+    """
     try:
         modules_call = Pyro4.core.Proxy('PYRO:Pyro_Server@' + ipAddressServer + ':' + connectionPort)
-        IV_datasets= modules_call.lst_IV_datasets(pathInclude=True)
+        IV_datasets= modules_call.lst_IV_datasets()
         print("\n".join(IV_datasets))
     except Exception as e:
         print(e.args)
@@ -35,4 +41,4 @@ def call_Shutdown():
 
 get_IV_dataset()
 
-#call_Shutdown()
+call_Shutdown()
