@@ -22,7 +22,7 @@ def get_IV_dataset():
     """
     try:
         modules_call = Pyro4.core.Proxy('PYRO:Pyro_Server@' + ipAddressServer + ':' + connectionPort)
-        IV_datasets= modules_call.lst_IV_datasets()
+        IV_datasets= modules_call.lst_IV_datasets(pathInclude=True)
         print("\n".join(IV_datasets))
     except Exception as e:
         print(e.args)

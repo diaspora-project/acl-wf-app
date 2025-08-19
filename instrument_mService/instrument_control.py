@@ -22,6 +22,7 @@ class Embedded_Server(object):
     def lst_IV_datasets(self, pathInclude=False,type='relative') -> list:
         datasets=[os.path.splitext(x)[0] for x in os.listdir(datasetPath)]
         if pathInclude:
+            datasets = os.listdir(datasetPath)
             if type == 'absolute':
                 datasets = [os.path.abspath(y) for y in (os.path.join(datasetPath, x) for x in datasets)]
             else:
