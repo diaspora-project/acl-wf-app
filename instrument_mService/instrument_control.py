@@ -83,8 +83,3 @@ print('daemon closed')
 
 # if __name__ == '__main__':
 #   pass
-
-# df = pd.read_csv('./I-V_data/Test_Ferrocene_disconnect_counter_v01.txt',sep='\t')
-# xx=df['t'].head().diff()
-# xx=xx.dropna().reset_index(drop=True)
-# xx.mean().round(2)
