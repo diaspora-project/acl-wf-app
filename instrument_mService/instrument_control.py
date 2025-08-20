@@ -54,6 +54,14 @@ class Embedded_Server(object):
 
         return dataset_df
 
+    def stream_IV_measurement(self, dataset_file, size=None, timestamp=False):
+        """
+        unlike get_IV_measurement, this method is to stream measurement from instrument facility to the workflow orchestrator based on the timestamp of each collected point in the reaction.
+        this method is TODO and to figure out which is the proper streaming mechanism to apply
+        """
+        pass
+
+
     @Pyro4.oneway
     def shutdown(self):
         print(f'Ecosystem communication session is terminated ')
