@@ -22,8 +22,18 @@ def get_IV_dataset():
     """
     try:
         modules_call = Pyro4.core.Proxy('PYRO:Pyro_Server@' + ipAddressServer + ':' + connectionPort)
-        IV_datasets= modules_call.lst_IV_datasets(pathInclude=True)
+        IV_datasets= modules_call.lst_IV_dataset(pathInclude=True)
         print("\n".join(IV_datasets))
+    except Exception as e:
+        print(e.args)
+
+def get_IV_data(fileName) ->pd.DataFrame:
+    try:
+        modules_call = Pyro4.core.Proxy('PYRO:Pyro_Server@' + ipAddressServer + ':' + connectionPort)
+        IV_df= modules_call.get_IV_measurement(fileName)
+        print(IV_df)
+        print(len(IV_df['I']))
+
     except Exception as e:
         print(e.args)
 
@@ -37,8 +47,9 @@ def call_Shutdown():
         print(e.args)
 
 
-#call_Pyro_test_call()
 
 get_IV_dataset()
 
-call_Shutdown()
+fileName='instrument_mService\I-V_data\Test_Ferrocene_normal_s01.txt'
+get_IV_data(fileName)
+#call_Shutdown()

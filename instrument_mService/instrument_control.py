@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 from pprint import pprint
 
+import data_handling
+
 Pyro4.config.SERIALIZERS_ACCEPTED.add('pickle')
 Pyro4.config.SERIALIZER = "pickle"
 
@@ -19,7 +21,7 @@ class Embedded_Server(object):
     def __init__(self, daemon):
         self.daemon = daemon
     
-    def lst_IV_datasets(self, pathInclude=False,type='relative') -> list:
+    def lst_IV_dataset(self, pathInclude=False,type='relative') -> list:
         datasets=[os.path.splitext(x)[0] for x in os.listdir(datasetPath)]
         if pathInclude:
             datasets = os.listdir(datasetPath)
@@ -29,8 +31,28 @@ class Embedded_Server(object):
                 datasets=[os.path.relpath(y) for y in (os.path.join(datasetPath,x) for x in datasets)]
         return datasets
 
-    def get_IV_dataset(self, dataset,size: int |None)-> pd.DataFrame:
-        pass
+    def get_IV_measurement(self, dataset_file,size=None,timestamp=False)-> pd.DataFrame:
+        """
+        :param dataset_file:
+        :param size: default is None.
+        if there is a size it should be in byte and larger than measurement file to replicate data to that size
+        :param timestamp: default is False. if True means fetch the timestamp of recording the reaction datasample
+        :return: dataframe of the potential (I), voltage (V), and possibly the timestamp.
+        the return dataframe may be replicated based on the given size.
+        """
+        dataset_df=data_handling.get_measurement(os.path.dirname(dataset_file),os.path.basename(dataset_file),timestamp)
+        if size is not None:
+            df_size=data_handling.get_measurement_size(dataset_df)
+            IV_df_replication=size//df_size
+            if IV_df_replication >1:
+                dataset_df=data_handling.duplicate_IV_measurement(dataset_df,IV_df_replication)
+            if timestamp:
+                columns=['t','I','Ewe']
+            else:
+                columns=['I','Ewe']
+            dataset_df=data_handling.extract_measurement_parameters(dataset_df,columns)
+
+        return dataset_df
 
     @Pyro4.oneway
     def shutdown(self):
