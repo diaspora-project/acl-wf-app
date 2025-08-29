@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 Pyro4.config.SERIALIZERS_ACCEPTED.add('pickle')
 Pyro4.config.SERIALIZER = "pickle"
 
-ipAddressServer='192.168.1.242'
-connectionPort='5001'
+ipAddressServer='127.0.0.1'
+connectionPort='443'
 
 def get_IV_dataset():
     """
@@ -52,4 +52,4 @@ get_IV_dataset()
 
 fileName='instrument_mService\I-V_data\Test_Ferrocene_normal_s01.txt'
 get_IV_data(fileName)
-#call_Shutdown()
+call_Shutdown()

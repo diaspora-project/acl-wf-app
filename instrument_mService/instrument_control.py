@@ -12,8 +12,8 @@ import data_handling
 Pyro4.config.SERIALIZERS_ACCEPTED.add('pickle')
 Pyro4.config.SERIALIZER = "pickle"
 
-ipAddressServer='192.168.1.242'
-connectionPort='5001'
+ipAddressServer='127.0.0.1'
+connectionPort='443'
 datasetPath='./instrument_mService/I-V_data'
 
 @Pyro4.expose
