@@ -22,14 +22,15 @@ class Embedded_Server(object):
         self.daemon = daemon
     
     def lst_IV_dataset(self, pathInclude=False,type='relative') -> list:
-        datasets=[os.path.splitext(x)[0] for x in os.listdir(datasetPath)]
+        dataset=[os.path.splitext(x)[0] for x in os.listdir(datasetPath)]
         if pathInclude:
-            datasets = os.listdir(datasetPath)
+            dataset = os.listdir(datasetPath)
             if type == 'absolute':
-                datasets = [os.path.abspath(y) for y in (os.path.join(datasetPath, x) for x in datasets)]
+                dataset = [os.path.abspath(y) for y in (os.path.join(datasetPath, x) for x in dataset)]
             else:
-                datasets=[os.path.relpath(y) for y in (os.path.join(datasetPath,x) for x in datasets)]
-        return datasets
+                dataset=[os.path.relpath(y) for y in (os.path.join(datasetPath, x) for x in dataset)]
+        dataset_size = [os.path.getsize(x) for x in dataset]
+        return dataset,dataset_size
 
     def get_IV_measurement(self, dataset_file,size=None,timestamp=False)-> pd.DataFrame:
         """

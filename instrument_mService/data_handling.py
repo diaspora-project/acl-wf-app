@@ -57,5 +57,10 @@ def extract_measurement_parameters(df,columns):
     if len(columns) == 2:
         final_df=df[['I', 'Ewe']]
     elif len(columns)==3: # in case timestamp is requested
-        final_df=df[['t','I', 'Ewe']]
+        columns = df.columns.tolist()
+        if 't' in columns:
+            final_df=df[['t','I', 'Ewe']]
+        else:
+            print('Warning: columns t(timestamp) not found in IV measurements. return only I and Ewe')
+            final_df = df[['I', 'Ewe']]
     return final_df

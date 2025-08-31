@@ -66,8 +66,8 @@ def allocate_inference_service(fileName_w_path,I, Ewe, g_e_p, statuses=None, ver
         future = gce.submit(Classify_IV_profile, Ewe, I, v_probe, sys_path, cl_path)
         #print(future.result())
         i_probe, y_pred, profile_class,elapsed_exe_time = future.result()
-        print(f" IV Profile {fileName_w_path} is \
-         {('Normal') if profile_class else ('Invalid')}")
+
+    return i_probe, y_pred, profile_class, elapsed_exe_time
 
 
 

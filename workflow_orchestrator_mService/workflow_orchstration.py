@@ -6,6 +6,7 @@ import pickle
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import yaml
 
 from workflow_services import allocate_inference_service,prepare_endpoints_for_inference
 
@@ -15,11 +16,40 @@ Pyro4.config.SERIALIZER = "pickle"
 ipAddressServer='127.0.0.1'
 connectionPort='443'
 
-g_endpoint={
-    'device':'wombat','gid':'f9f73d0b-72f1-435c-8a07-319b85452ed8','hostname':'pivot03cp.ccs.ornl.gov',
-    'classifier_path':'/ccsopen/home/4ua/.globus_compute/acl_ace_ep_wombat_slurm/acl_dependencies/ml_models_dir',
-    'sys_path':'/ccsopen/home/4ua/.globus_compute/acl_ace_ep_wombat_slurm/acl_dependencies',
-    'training_path':'/ccsopen/home/4ua/.globus_compute/acl_ace_ep_wombat_slurm/acl_dependencies/training_profiles','mode':'gce','timeout':0}
+
+with open('./workflow_orchestrator_mService/endpoint01.yaml', 'r') as file:
+    g_endpoint = yaml.safe_load(file)
+
+
+def get_VI_measurement_parameters():
+    try:
+        input_parameters = input("Enter IV measurement file, projected size and timestamp(default: blank) ").split(' ')
+        # example
+        # instrument_mService\I-V_data\Test_Ferrocene_disconnect_working_s01.txt 8000 True
+        # or
+        # instrument_mService\I-V_data\Test_Ferrocene_disconnect_working_s01.txt
+        if len(input_parameters) == 1:
+            fileName_w_path = input_parameters[0]
+            size = None
+            timestamp = False
+        elif len(input_parameters) == 2:
+            fileName_w_path = input_parameters[0]
+            size = int(input_parameters[1])
+            timestamp = False
+        elif len(input_parameters) == 3:
+            fileName_w_path = input_parameters[0]
+            size = int(input_parameters[1])
+            timestamp = {"true": True, "false": False}.get(input_parameters[2].strip().lower())
+        else:
+            raise ValueError("Invalid number of parameters and/or type")
+    except ValueError as e:
+        # Handle the raised ValueError
+        print(f"Caught an error: {e}")
+
+    except Exception as e:
+        # Catch any other unexpected exceptions
+        print(f"An unexpected error occurred: {e}")
+    return fileName_w_path, size, timestamp
 
 
 def get_IV_dataset():
@@ -31,17 +61,18 @@ def get_IV_dataset():
     """
     try:
         modules_call = Pyro4.core.Proxy('PYRO:Pyro_Server@' + ipAddressServer + ':' + connectionPort)
-        IV_datasets= modules_call.lst_IV_dataset(pathInclude=True)
-        print("\n".join(IV_datasets))
+        IV_dataset, dataset_size= modules_call.lst_IV_dataset(pathInclude=True)
+        for i in range(len(IV_dataset)):
+            print(f'{IV_dataset[i]}: size: {dataset_size[i]} bytes')
     except Exception as e:
         print(e.args)
 
-def get_IV_data(fileName) ->pd.DataFrame:
+def get_IV_data(fileName,size=None,timestamp=False) ->pd.DataFrame:
     try:
         modules_call = Pyro4.core.Proxy('PYRO:Pyro_Server@' + ipAddressServer + ':' + connectionPort)
-        IV_df= modules_call.get_IV_measurement(fileName)
-        print(IV_df)
-        print(len(IV_df['I']))
+        IV_df= modules_call.get_IV_measurement(fileName,size,timestamp)
+        #print(IV_df)
+        #print(len(IV_df['I']))
 
     except Exception as e:
         print(e.args)
@@ -56,20 +87,26 @@ def call_Shutdown():
     except Exception as e:
         print(e.args)
 
-
+# fileName_w_path= './instrument_mService\I-V_data\Test_Ferrocene_normal_1KB.txt'
+# size=None
+# timestamp=False
 
 get_IV_dataset()
 
-fileName_w_path= 'instrument_mService\I-V_data\Test_Ferrocene_normal_s01.txt'
-IV_df=get_IV_data(fileName_w_path)
+
+
+fileName_w_path,size,timestamp=get_VI_measurement_parameters()
+
+IV_df=get_IV_data(fileName_w_path,size,timestamp)
 fileName_w_path=os.path.basename(fileName_w_path)[:-4]
 I=np.array(IV_df.I).reshape(-1,1)
 Ewe=np.array(IV_df.Ewe).reshape(-1,1)
 prepare_endpoints_for_inference(g_endpoint)
 
-allocate_inference_service(fileName_w_path,I, Ewe, g_endpoint)
-# print("\n##################    Inference Allocation for Testing I-V profile      #################################")
-# rc, statuses, i_probe_t,y_pred,profile_class,elapsed_time = allocate_inference_service(ep_gce, I, Ewe, g_endpoint)
-#
-#
+print("\n##################    Inference Allocation for Testing I-V profile      #################################")
+i_probe_t,y_pred,profile_class,elapsed_time=allocate_inference_service(fileName_w_path,I, Ewe, g_endpoint)
+print(f" IV Profile {fileName_w_path} is \
+         {('Normal') if profile_class else ('Invalid')}")
+
 # call_Shutdown()
+
