@@ -33,7 +33,8 @@ def prepare_endpoints_for_inference(g_e_p):
         future = gce.submit(helloworld_gep,g_e_p['sys_path'])
         rcv = future.result()
         print(future.result())
-        print(f"Received {rcv} from {g_e_p['gid']} worker at {g_e_p['device']}")
+        #print(f"Received {rcv} from {g_e_p['gid']} worker at {g_e_p['device']}")
+        print(f"Activate {g_e_p['gid']} worker at {g_e_p['device']}")
 
 
 
