@@ -1,11 +1,8 @@
 import Pyro4
 import os
 import sys
-import time
-import pickle
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import yaml
 
 from workflow_services import allocate_inference_service,prepare_endpoints_for_inference
@@ -13,12 +10,9 @@ from workflow_services import allocate_inference_service,prepare_endpoints_for_i
 Pyro4.config.SERIALIZERS_ACCEPTED.add('pickle')
 Pyro4.config.SERIALIZER = "pickle"
 
-ipAddressServer='127.0.0.1'
-connectionPort='443'
+# to run workflow_orchestration.py via cmd
+# python workflow_orchestration.py ipServerAddress=127.0.0.1 connectionPort=443 gendpoint=./workflow_orchestrator_mService/endpoint01.yaml
 
-
-with open('./workflow_orchestrator_mService/endpoint01.yaml', 'r') as file:
-    g_endpoint = yaml.safe_load(file)
 
 
 def get_VI_measurement_parameters():
@@ -71,7 +65,7 @@ def get_IV_data(fileName,size=None,timestamp=False) ->pd.DataFrame:
     try:
         modules_call = Pyro4.core.Proxy('PYRO:Pyro_Server@' + ipAddressServer + ':' + connectionPort)
         IV_df= modules_call.get_IV_measurement(fileName,size,timestamp)
-        #print(IV_df)
+        print(IV_df)
         #print(len(IV_df['I']))
 
     except Exception as e:
@@ -87,26 +81,30 @@ def call_Shutdown():
     except Exception as e:
         print(e.args)
 
-# fileName_w_path= './instrument_mService\I-V_data\Test_Ferrocene_normal_1KB.txt'
-# size=None
-# timestamp=False
 
-get_IV_dataset()
+if __name__ == '__main__':
+    #ARGS
+    # ipAddressServer='127.0.0.1'
+    # connectionPort='443'
+    # with open('./workflow_orchestrator_mService/endpoint01.yaml', 'r') as file:
+    #     g_endpoint = yaml.safe_load(file)
+    ipAddressServer=(sys.argv[1]).split('=')[1]
+    connectionPort=(sys.argv[2]).split('=')[1]
+    g_endpoint_file=(sys.argv[3]).split('=')[1]
+    with open(g_endpoint_file, 'r') as file:
+         g_endpoint = yaml.safe_load(file)
 
 
+    get_IV_dataset()
+    fileName_w_path, size, timestamp = get_VI_measurement_parameters()
+    IV_df = get_IV_data(fileName_w_path, size, timestamp)
+    fileName_w_path = os.path.basename(fileName_w_path)[:-4]
+    I = np.array(IV_df.I).reshape(-1, 1)
+    Ewe = np.array(IV_df.Ewe).reshape(-1, 1)
+    prepare_endpoints_for_inference(g_endpoint)
 
-fileName_w_path,size,timestamp=get_VI_measurement_parameters()
-
-IV_df=get_IV_data(fileName_w_path,size,timestamp)
-fileName_w_path=os.path.basename(fileName_w_path)[:-4]
-I=np.array(IV_df.I).reshape(-1,1)
-Ewe=np.array(IV_df.Ewe).reshape(-1,1)
-prepare_endpoints_for_inference(g_endpoint)
-
-print("\n##################    Inference Allocation for Testing I-V profile      #################################")
-i_probe_t,y_pred,profile_class,elapsed_time=allocate_inference_service(fileName_w_path,I, Ewe, g_endpoint)
-print(f" IV Profile {fileName_w_path} is \
-         {('Normal') if profile_class else ('Invalid')}")
-
-# call_Shutdown()
-
+    print("\n##################    Inference Allocation for Testing I-V profile      #################################")
+    i_probe_t, y_pred, profile_class, elapsed_time = allocate_inference_service(fileName_w_path, I, Ewe, g_endpoint)
+    print(f" IV Profile {fileName_w_path} is \
+             {('Normal') if profile_class else ('Invalid')}")
+    call_Shutdown()

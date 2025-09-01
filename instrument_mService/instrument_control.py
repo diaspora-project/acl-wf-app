@@ -2,18 +2,16 @@ import os
 import Pyro4
 import time
 import sys
-import pickle
-import numpy as np
 import pandas as pd
-from pprint import pprint
 
 import data_handling
 
 Pyro4.config.SERIALIZERS_ACCEPTED.add('pickle')
 Pyro4.config.SERIALIZER = "pickle"
 
-ipAddressServer='127.0.0.1'
-connectionPort='443'
+# to run instrument_control.py via cmd
+# python instrument_control.py ipServerAddress=127.0.0.1 connectionPort=443
+
 datasetPath='./instrument_mService/I-V_data'
 
 @Pyro4.expose
@@ -70,17 +68,20 @@ class Embedded_Server(object):
 
     
 
-    
-daemon = Pyro4.Daemon(host=ipAddressServer, port=int(connectionPort))
-call_pyro_class = Embedded_Server(daemon)
-uri = daemon.register(call_pyro_class, objectId='Pyro_Server')
-print(Embedded_Server)
-print(f'\turi = {uri}')
-print('daemon running.')
-time.sleep(5)
-daemon.requestLoop()
-daemon.close()
-print('daemon closed')
 
-# if __name__ == '__main__':
-#   pass
+
+if __name__ == '__main__':
+    ipAddressServer=(sys.argv[1]).split('=')[1]
+    connectionPort=(sys.argv[2]).split('=')[1]
+    # ipAddressServer='127.0.0.1'
+    # connectionPort='443'
+    daemon = Pyro4.Daemon(host=ipAddressServer, port=int(connectionPort))
+    call_pyro_class = Embedded_Server(daemon)
+    uri = daemon.register(call_pyro_class, objectId='Pyro_Server')
+    print(Embedded_Server)
+    print(f'\turi = {uri}')
+    print('daemon running.')
+    time.sleep(5)
+    daemon.requestLoop()
+    daemon.close()
+    print('daemon closed')

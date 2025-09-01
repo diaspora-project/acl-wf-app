@@ -31,10 +31,9 @@ def prepare_endpoints_for_inference(g_e_p):
     with Executor(endpoint_id=g_e_p['gid'], amqp_port=443,client=gcc) as gce:
         # ... then submit for execution, ...
         future = gce.submit(helloworld_gep,g_e_p['sys_path'])
-        rcv = future.result()
-        print(future.result())
-        #print(f"Received {rcv} from {g_e_p['gid']} worker at {g_e_p['device']}")
-        print(f"Activate {g_e_p['gid']} worker at {g_e_p['device']}")
+        #print(future.result())
+        print('\n################    Activate Remote Compute Worker or Globus Endpoint    ##############')
+        print(f" {g_e_p['gid']} at {g_e_p['device']}")
 
 
 
