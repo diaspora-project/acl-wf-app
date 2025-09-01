@@ -1,0 +1,6 @@
+pip==23.2.1
+wheel==0.41.2
+setuptools==68.2.0
+Pyro4==4.82
+numpy==2.2.6
+pandas==2.3.1
