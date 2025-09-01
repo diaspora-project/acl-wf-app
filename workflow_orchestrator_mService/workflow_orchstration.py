@@ -11,7 +11,7 @@ Pyro4.config.SERIALIZERS_ACCEPTED.add('pickle')
 Pyro4.config.SERIALIZER = "pickle"
 
 # to run workflow_orchestration.py via cmd
-# python workflow_orchestration.py ipServerAddress=127.0.0.1 connectionPort=443 gendpoint=./workflow_orchestrator_mService/endpoint01.yaml
+## python workflow_orchestration.py ipServerAddress=127.0.0.1 connectionPort=443 gendpoint=./workflow_orchestrator_mService/endpoint01.yaml
 
 
 
