@@ -1,0 +1,8 @@
+device: polaris
+gid: d114d821-a502-4cb5-bea4-c316cd320616
+hostname: polaris.alcf.anl.gov
+classifier_path: /home/aneesalnajjar/.globus_compute/ornl_polaris_ep/acl_dependencies/ml_models_dir
+sys_path: /home/aneesalnajjar/.globus_compute/ornl_polaris_ep/acl_dependencies
+training_path: /home/aneesalnajjar/.globus_compute/ornl_polaris_ep/acl_dependencies/training_profiles
+mode: gce
+timeout: 0
