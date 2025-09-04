@@ -1,7 +1,6 @@
 pip==23.2.1
 wheel==0.41.2
 setuptools==68.2.0
-Pyro4==4.82
 numpy==2.2.6
 pandas==2.3.1
 dill==0.3.5.1
@@ -9,3 +8,5 @@ scikit-learn==1.7.1
 globus-compute-common==0.7.1
 globus-compute-sdk==3.12.0
 globus-sdk==3.62.0
+globus-compute-endpoint==3.12.0
+globus-identity-mapping==0.4.0
