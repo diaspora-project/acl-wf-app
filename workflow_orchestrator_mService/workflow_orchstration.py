@@ -107,4 +107,4 @@ if __name__ == '__main__':
     i_probe_t, y_pred, profile_class, elapsed_time = allocate_inference_service(fileName_w_path, I, Ewe, g_endpoint)
     print(f" IV Profile {fileName_w_path} is \
              {('Normal') if profile_class else ('Invalid')}")
-    call_Shutdown()
+    #call_Shutdown()

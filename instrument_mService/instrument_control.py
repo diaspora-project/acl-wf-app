@@ -12,8 +12,8 @@ Pyro4.config.SERIALIZER = "pickle"
 # to run instrument_control.py via cmd
 # python instrument_control.py ipServerAddress=127.0.0.1 connectionPort=443
 
-datasetPath='/I-V_data'
-
+#datasetPath='/I-V_data'
+datasetPath="instrument_mService/I-V_data/"
 @Pyro4.expose
 class Embedded_Server(object):
     def __init__(self, daemon):
