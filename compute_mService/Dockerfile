@@ -27,11 +27,9 @@ RUN apt-get update --fix-missing && apt-get install -y \
     iproute2 \
     ufw
 
+CMD ["python3", "instrument_control.py", "ipServerAddress=172.17.0.2", "connectionPort=5001"]
 
-CMD ["python3", "workflow_orchstration.py", "ipServerAddress=172.17.0.2", "connectionPort=5001","gendpoint=endpoint02.yaml"]
+# python3 instrument_control.py ipServerAddress=172.17.0.2 connectionPort=5001
 
-#python3 workflow_orchstration.py ipServerAddress=172.17.0.2 connectionPort=5001 gendpoint=endpoint01.yaml
-
-# [4ua@wolf1 workflow_orchestrator_mService]$ docker build -f Dockerfile -t workfloworchestration:latest .
-
-# [4ua@wolf1 workflow_orchestrator_mService]$ docker run -it workfloworchestration:latest
+# 4ua@wolf1 instrument_mService]$ docker build -f Dockerfile -t instrumentcontrol:latest .
+# [4ua@wolf1 instrument_mService]$ docker run -it instrumentcontrol:latest
