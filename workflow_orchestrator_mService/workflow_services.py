@@ -22,6 +22,7 @@ def prepare_endpoints_for_inference(g_e_p):
         rcv = helloworld('Hello')
         return rcv
 
+
     with Executor(endpoint_id=g_e_p['gid'], amqp_port=443,client=gcc) as gce:
         # ... then submit for execution, ...
         future = gce.submit(helloworld_gep,g_e_p['sys_path'])
@@ -62,6 +63,9 @@ def allocate_inference_service(fileName_w_path,I, Ewe, g_e_p, statuses=None, ver
         i_probe, y_pred, profile_class,elapsed_exe_time = future.result()
 
     return i_probe, y_pred, profile_class, elapsed_exe_time
+
+
+
 
 
 

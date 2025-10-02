@@ -1,8 +1,18 @@
-device: wombat
-gid: f9f73d0b-72f1-435c-8a07-319b85452ed8
+#device: wombat
+#gid: f9f73d0b-72f1-435c-8a07-319b85452ed8
+#hostname: pivot03cp.ccs.ornl.gov
+#classifier_path: /ccsopen/home/4ua/.globus_compute/acl_ace_ep_wombat_slurm/acl_dependencies/ml_models_dir
+#sys_path: /ccsopen/home/4ua/.globus_compute/acl_ace_ep_wombat_slurm/acl_dependencies
+#training_path: /ccsopen/home/4ua/.globus_compute/acl_ace_ep_wombat_slurm/acl_dependencies/training_profiles
+#mode: gce
+#timeout: 0
+
+
+device: wombat2
+gid: 644eeb60-cf53-4614-90e3-ceff0ae72dea
 hostname: pivot03cp.ccs.ornl.gov
-classifier_path: /ccsopen/home/4ua/.globus_compute/acl_ace_ep_wombat_slurm/acl_dependencies/ml_models_dir
-sys_path: /ccsopen/home/4ua/.globus_compute/acl_ace_ep_wombat_slurm/acl_dependencies
-training_path: /ccsopen/home/4ua/.globus_compute/acl_ace_ep_wombat_slurm/acl_dependencies/training_profiles
+classifier_path: /ccsopen/home/4ua/.globus_compute/acl_ace_ep_slurm/acl_dependencies/ml_models_dir
+sys_path: /ccsopen/home/4ua/.globus_compute/acl_ace_ep_slurm/acl_dependencies
+training_path: /ccsopen/home/4ua/.globus_compute/acl_ace_ep_slurm/acl_dependencies/training_profiles
 mode: gce
 timeout: 0
