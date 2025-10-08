@@ -84,7 +84,7 @@ WORKDIR /home/$USER
 COPY . .
 RUN pip3 install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 
-#CMD ["python3", "instrument_control.py", "ipServerAddress=172.17.0.2", "connectionPort=5001"]
+CMD ["python3", "instrument_control.py", "ipServerAddress=192.168.100.10", "connectionPort=5001"]
 #########################################################################################
 
 # Comments
