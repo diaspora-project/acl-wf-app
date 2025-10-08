@@ -17,6 +17,8 @@ services:
       context: ./workflow_orchestrator_mService
       dockerfile: Dockerfile
     container_name: workfloworchestration
+    environment:
+      XXGLOBUS_TOKEN: 8Tqhvo9UHRavQFj8dIChravAxkZ78j
     #ports:
     #  - "5001:5001"
     networks:
