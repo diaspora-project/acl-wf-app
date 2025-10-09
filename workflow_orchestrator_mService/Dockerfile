@@ -89,7 +89,7 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir -r requirements.tx
 # Comments
 # 1- to build the docker image: cd acl-mini-app/workflow_orchestrator_mService && docker build -f Dockerfile -t workfloworchestration:latest .
 # 2- to run the container with dockerfile CMD: docker run -it workfloworchestration:latest
-# 3- to execute worflow orchestrator: python3 workflow_orchstration.py ipServerAddress=172.17.0.2 connectionPort=5001 gendpoint=endpoint03.yaml
+# 3- to execute worflow orchestrator: python3 workflow_orchstration.py ipServerAddress=<acl-electrochemistry container ip> connectionPort=5001 gendpoint=endpoint03.yaml
 # 4- make sure you have the ip address of container running the instrument control module.
-# 5- make sure you update endpoint file with globus id.
-# Note: the workfloworchestration container at this point is just a forwarding service that takes the measurement from the instrument container and forward it with analytic code to the iv_inference_ep container
+# 5- make sure you update endpoint03 file with globus token.
+# Note: the workfloworchestration container at this point is just a forwarding service that takes the measurement from the acl-electrochemistry service and forward it with analytic code to the iv_inference_ep service

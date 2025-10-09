@@ -84,10 +84,10 @@ WORKDIR /home/$USER
 COPY . .
 RUN pip3 install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 
-CMD ["python3", "instrument_control.py", "ipServerAddress=192.168.100.10", "connectionPort=5001"]
+#CMD ["python3", "instrument_control.py", "ipServerAddress=192.168.100.10", "connectionPort=5001"]
 #########################################################################################
 
 # Comments
-# 1- to build the docker image: cd acl-mini-app/instrument_mService && docker build -f Dockerfile -t instrumentcontrol:latest .
-# 2- to run the container with dockerfile CMD: docker run -it instrumentcontrol:latest
-# 3- to execute instrumentcontrol service: python3 instrument_control.py ipServerAddress=172.17.0.2 connectionPort=5001
+# 1- to build the docker image: cd acl-mini-app/instrument_mService && docker build -f Dockerfile -t acl-electrochemistry:latest .
+# 2- to run the container with dockerfile CMD: docker run -it acl-electrochemistry:latest
+# 3- to execute acl-electrochemistry service: python3 instrument_control.py ipServerAddress=<acl-electrochemistry container ip> connectionPort=5001
