@@ -7,6 +7,21 @@ application, such as battery testing and production.
 The measurements are collected as part of a flow reaction on a certain electrolyte
 solution using cyclic voltammetry (CV) electrochemical experiment [[1]](#1),[[2]](#2).
 
+## References
+<a id="1">[1]</a> 
+A. Al-Najjar, N. Rao, et al, “Cross-facility orchestration of electrochemistry
+experiments and computations,” in Proceedings of the SC ’23 Workshops of The
+International Conference on High Performance Computing, Network, Storage,
+and Analysis, SC-W ’23, ( New York, NY, USA ), p. 2118–2125,
+Association for Computing Machinery, 2023.
+
+<a id="2">[2]</a>
+A. Al-Najjar, N. S. V. Rao, et al, “Normality of i-v measurements using ml,
+” in 2023 IEEE 19th International Conference on e-Science (e-Science),
+pp. 1–2, 2023.
+
+
+
 ## Ecosystem Design
 The ecosystem spans multiple instrument and computing facilities distributed across multiple sites for real-time measurement collection and analytics.
 The ecosystem includes Autonomous Chemistry Laboratory (ACL) at ORNL
@@ -44,26 +59,11 @@ The third container is __workfloworchestration__ that forwards I-V measurements 
 3. Run docker containers
     - for __acl-electrochemistry__
       - docker run -it acl-electrochemistry:latest
-      - python3 instrument_control.py ipServerAddress=<acl-electrochemistry container ip> connectionPort=5001 # You get the IP using ifconfig inside the running container
+      - python3 instrument_control.py ipServerAddress= <acl-electrochemistry container ip> connectionPort=5001 # You get the IP using ifconfig inside the running container
     - for __iv_inference_ep__
       - run -it iv_inference_ep:latest bash  # You will be asked to open URL and get Globus token
     - for __workfloworchestration__
       - docker run -it workfloworchestration:latest
-      - python3 workflow_orchstration.py ipServerAddress=<acl-electrochemistry container ip> connectionPort=5001 gendpoint=endpoint03.yaml #make sure you update endpoint03 file with globus token.
+      - python3 workflow_orchstration.py ipServerAddress= <acl-electrochemistry container ip> connectionPort=5001 gendpoint=endpoint03.yaml #make sure you update endpoint03 file with globus token.
 
-
-
-
-## References
-<a id="1">[1]</a> 
-A. Al-Najjar, N. Rao, et al, “Cross-facility orchestration of electrochemistry
-experiments and computations,” in Proceedings of the SC ’23 Workshops of The
-International Conference on High Performance Computing, Network, Storage,
-and Analysis, SC-W ’23, ( New York, NY, USA ), p. 2118–2125,
-Association for Computing Machinery, 2023.
-
-<a id="2">[2]</a>
-A. Al-Najjar, N. S. V. Rao, et al, “Normality of i-v measurements using ml,
-” in 2023 IEEE 19th International Conference on e-Science (e-Science),
-pp. 1–2, 2023.
 
