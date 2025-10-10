@@ -59,11 +59,11 @@ The third container is __workfloworchestration__ that forwards I-V measurements 
 3. Run docker containers
     - for __acl-electrochemistry__
       - docker run -it acl-electrochemistry:latest
-      - python3 instrument_control.py ipServerAddress= <acl-electrochemistry container ip> connectionPort=5001 # You get the IP using ifconfig inside the running container
+      - python3 instrument_control.py ipServerAddress= \<acl-electrochemistry container ip\> connectionPort=5001 # You get the IP using ifconfig inside the running container
     - for __iv_inference_ep__
       - run -it iv_inference_ep:latest bash  # You will be asked to open URL and get Globus token
     - for __workfloworchestration__
       - docker run -it workfloworchestration:latest
-      - python3 workflow_orchstration.py ipServerAddress= <acl-electrochemistry container ip> connectionPort=5001 gendpoint=endpoint03.yaml #make sure you update endpoint03 file with globus token.
+      - python3 workflow_orchstration.py ipServerAddress= \<acl-electrochemistry container ip\> connectionPort=5001 gendpoint=endpoint03.yaml #make sure you update endpoint03 file with globus token.
 
 
