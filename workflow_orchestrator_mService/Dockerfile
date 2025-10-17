@@ -112,13 +112,12 @@ CMD ["jupyter", "notebook", "workflow_orchestration.ipynb", "--ip=0.0.0.0", "--p
 #########################################################################################
 # Comments
 # 1- to build the docker image: cd acl-mini-app/workflow_orchestrator_mService && docker build -f Dockerfile -t workfloworchestration:latest .
-# 2- to run the container with dockerfile CMD: docker run -it workfloworchestration:latest bash
-# 3- to execute worflow orchestrator
-#    3-1. no Jupyter notebook:
+# 2- to run worflow orchestrator
+#    2-1. no Jupyter notebook:
 #       - docker run -it workfloworchestration:latest bash
 #       - python3 workflow_orchstration.py ipServerAddress=<acl-electrochemistry container ip> connectionPort=5001 gendpoint=endpoint03.yaml
-#    3-2. with Jupyter notebook:
+#    2-2. with Jupyter notebook:
 #       - docker run -p 8888:8888 workfloworchestration:latest # then find and open workflow_orchestration.ipynb
-# 4- make sure you have the ip address of container running the instrument control module.
-# 5- make sure you update endpoint03 file with globus token.
+# 3- make sure you have the ip address of container running the instrument control module.
+# 4- make sure you update endpoint03 file with globus token.
 # Note: the workfloworchestration container at this point is just a forwarding service that takes the measurement from the acl-electrochemistry service and forward it with analytic code to the iv_inference_ep service
