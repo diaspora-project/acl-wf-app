@@ -78,31 +78,47 @@ RUN echo '$USER ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/$USER \
 USER $USER
 # Set working directory
 WORKDIR /home/$USER
+
+RUN sudo chmod -R u+w /home/$USER/
 #####################################################################################################
 # 5. copy docker image files from the source and install python requirements.
 
 COPY . .
 RUN pip3 install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
+## add python3.10 path to $PATH
+ENV PATH="/home/$USER/.local/bin:$PATH"
 
 #######################################################################################################
 # 6. install and configure Jupyter Notebook
-# Install Jupyter Notebook
-RUN pip install jupyter
+# Install Jupyter Notebook as a root
+USER root
+RUN pip3 install --no-cache-dir jupyter notebook ipykernel
 
+# Create a notebook configuration file
+# This sets the server to listen on all interfaces (0.0.0.0)
+RUN jupyter notebook --generate-config -y
+RUN echo "c.NotebookApp.ip = '0.0.0.0'" >> /root/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.allow_origin = '*'" >> /root/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.allow_root = True" >> /root/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.token = ''" >> /root/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.password = ''" >> /root/.jupyter/jupyter_notebook_config.py
 # Make port 8888 available to the world outside this container
 EXPOSE 8888
-
+ENV PYTHONPATH=".local/lib/python3.10/site-packages/:$PYTHONPATH"
 
 # Run Jupyter Notebook when the container launches
-#CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+CMD ["jupyter", "notebook", "workflow_orchestration.ipynb", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
 
 #########################################################################################
 # Comments
 # 1- to build the docker image: cd acl-mini-app/workflow_orchestrator_mService && docker build -f Dockerfile -t workfloworchestration:latest .
-# 2- to run the container with dockerfile CMD: docker run -it workfloworchestration:latest
-# 3- to execute worflow orchestrator:
-#    3-1. Either: python3 workflow_orchstration.py ipServerAddress=<acl-electrochemistry container ip> connectionPort=5001 gendpoint=endpoint03.yaml
-#    3-2. or jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root # then find and open workflow_orchestration.ipynb
+# 2- to run the container with dockerfile CMD: docker run -it workfloworchestration:latest bash
+# 3- to execute worflow orchestrator
+#    3-1. no Jupyter notebook:
+#       - docker run -it workfloworchestration:latest bash
+#       - python3 workflow_orchstration.py ipServerAddress=<acl-electrochemistry container ip> connectionPort=5001 gendpoint=endpoint03.yaml
+#    3-2. with Jupyter notebook:
+#       - docker run -p 8888:8888 workfloworchestration:latest # then find and open workflow_orchestration.ipynb
 # 4- make sure you have the ip address of container running the instrument control module.
 # 5- make sure you update endpoint03 file with globus token.
 # Note: the workfloworchestration container at this point is just a forwarding service that takes the measurement from the acl-electrochemistry service and forward it with analytic code to the iv_inference_ep service

@@ -43,7 +43,7 @@ First container is __acl-electrochemistry__ that emulates the instrument side at
 
 The second container is __iv_inference_ep__ that includes ML models for the features extraction and inference. These computation models executed as Globus endpoints. 
 
-The third container is __workfloworchestration__ that forwards I-V measurements from __acl-electrochemistry__ to __iv_inference_ep__ with ML analytic models.
+The third container is __workfloworchestration__ that forwards I-V measurements from __acl-electrochemistry__ to __iv_inference_ep__ with ML analytic models. The orchestrator is executed as jupyter notebook
 
 
 ## Download, build, and run ACL-MINI-APP
@@ -63,7 +63,8 @@ The third container is __workfloworchestration__ that forwards I-V measurements 
     - for __iv_inference_ep__
       - run -it iv_inference_ep:latest bash  # You will be asked to open URL and get Globus token
     - for __workfloworchestration__
-      - docker run -it workfloworchestration:latest
-      - python3 workflow_orchstration.py ipServerAddress=\<acl-electrochemistry container ip\> connectionPort=5001 gendpoint=endpoint03.yaml #make sure you update endpoint03 file with globus token.
+      - docker run -p 8888:8888 workfloworchestration:latest 
+        - /# make sure you update endpoint03 file with globus token.
+        - /# choose workflow_orchestration.ipynb notebook for execution 
 
 

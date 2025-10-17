@@ -1,5 +1,5 @@
 device: miniapp_gep
-gid: 8aa7db4f-4aff-4c3d-80e3-fe3b3eb1a3bd
+gid: c17df955-c966-42fe-b169-56b968389a42
 hostname:
 classifier_path: /home/globus-ep/.globus_compute/iv-normality-testing/acl_dependencies/ml_models_dir
 sys_path:       /home/globus-ep/.globus_compute/iv-normality-testing/acl_dependencies
